@@ -26,15 +26,13 @@ jobs:
 
     - name: Simulate queries from JSON
       run: |
-        python - <<EOF
-import json
+        import json
 
-with open("data/sample_treaties.json", "r") as f:
-    queries = json.load(f)
+        with open("data/sample_treaties.json", "r") as f:
+            queries = json.load(f)
 
-for i, item in enumerate(queries, 1):
-    print(f"--- Query {i} ---")
-    print(f"User query: {item['query']}")
-    print(f"Response: {item['response']}\n")
-EOF
-
+        for i, item in enumerate(queries, 1):
+            print(f"--- Query {i} ---")
+            print(f"User query: {item['query']}")
+            print(f"Response: {item['response']}\n")
+      shell: python
