@@ -23,17 +23,24 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install matplotlib networkx python-dotenv
 
-    - name: Simulate queries from JSON
+    - name: Simulate multiple user queries
       run: |
-        python - <<EOF
-import json
+        echo "queries = [" > demo.py
+        echo "  ('What is the Paris Agreement?', 'France agrees to reduce carbon emissions by 40% by 2030.')," >> demo.py
+        echo "  ('What does the Kyoto Protocol require?', 'Japan commits to reducing greenhouse gas emissions by 6% below 1990 levels.')," >> demo.py
+        echo "  ('What is the Montreal Protocol?', 'Countries agree to phase out ozone-depleting substances like CFCs.')," >> demo.py
+        echo "  ('What is the role of the IPCC?', 'The IPCC provides scientific assessments on climate change to inform policy decisions.')," >> demo.py
+        echo "  ('What is COP26?', 'COP26 focused on accelerating action toward the goals of the Paris Agreement.')," >> demo.py
+        echo "  ('What is the Green Climate Fund?', 'It helps developing countries finance climate mitigation and adaptation efforts.')" >> demo.py
+        echo "]" >> demo.py
+        echo "for i, (query, response) in enumerate(queries, 1):" >> demo.py
+        echo "    print(f'--- Query {i} ---')" >> demo.py
+        echo "    print(f'User query: {query}')" >> demo.py
+        echo "    print(f'Response: {response}\\n')" >> demo.py
+        python demo.py
 
-with open("data/sample_treaties.json", "r") as f:
-    queries = json.load(f)
-
-for i, item in enumerate(queries, 1):
-    print(f"--- Query {i} ---")
-    print(f"User query: {item['query']}")
-    print(f"Response: {item['response']}\n")
-EOF
+    - name: Visualize GraphRAG knowledge graph
+      run: python graphrag/visualize.py
