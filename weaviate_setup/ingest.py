@@ -9,7 +9,7 @@ from weaviate.classes.config import Property, DataType, Configure
 
 load_dotenv()
 
-# Initialize Weaviate v4 client (no OpenAI header)
+# Initialize Weaviate v4 client
 client = WeaviateClient(
     connection_params=ConnectionParams.from_url(os.getenv("WEAVIATE_URL")),
     auth_client=AuthApiKey(os.getenv("WEAVIATE_API_KEY"))
@@ -18,7 +18,7 @@ client = WeaviateClient(
 # Delete all existing collections
 client.collections.delete_all()
 
-# Create Clause collection based on schema
+# Create Clause collection
 client.collections.create(
     name="Clause",
     description="Policy clauses from global treaties",
@@ -34,4 +34,3 @@ client.collections.create(
 with open("data/sample_treaties.json") as f:
     for item in json.load(f):
         client.collections.get("Clause").data.insert(properties=item)
-
