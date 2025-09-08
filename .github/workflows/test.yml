@@ -42,5 +42,8 @@ jobs:
         echo "    print(f'Response: {response}\\n')" >> demo.py
         python demo.py
 
+    - name: Set PYTHONPATH
+      run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+
     - name: Visualize GraphRAG knowledge graph
       run: python graphrag/visualize.py
