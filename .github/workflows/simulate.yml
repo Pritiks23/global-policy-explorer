@@ -42,60 +42,69 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          echo "import os" > simulate.py
-          echo "from dotenv import load_dotenv" >> simulate.py
-          echo "import google.generativeai as genai" >> simulate.py
-          echo "from weaviate import WeaviateClient" >> simulate.py
-          echo "from weaviate.auth import AuthApiKey" >> simulate.py
-          echo "from weaviate.connect import ConnectionParams" >> simulate.py
-          echo "" >> simulate.py
-          echo "os.environ['WEAVIATE_URL'] = 'http://localhost:8080'" >> simulate.py
-          echo "os.environ['WEAVIATE_API_KEY'] = ''" >> simulate.py
-          echo "os.environ['GEMINI_API_KEY'] = os.getenv('GEMINI_API_KEY')" >> simulate.py
-          echo "" >> simulate.py
-          echo "load_dotenv()" >> simulate.py
-          echo "genai.configure(api_key=os.environ['GEMINI_API_KEY'])" >> simulate.py
-          echo "model = genai.GenerativeModel('gemini-pro')" >> simulate.py
-          echo "client = WeaviateClient(connection_params=ConnectionParams.from_url(os.environ['WEAVIATE_URL']), auth_client=AuthApiKey(os.environ['WEAVIATE_API_KEY']))" >> simulate.py
-          echo "" >> simulate.py
-          echo "# Create dummy schema and data" >> simulate.py
-          echo "client.schema.create_class({" >> simulate.py
-          echo "    'class': 'Clause'," >> simulate.py
-          echo "    'vectorizer': 'none'," >> simulate.py
-          echo "    'properties': [" >> simulate.py
-          echo "        {'name': 'treaty_name', 'dataType': ['text']}," >> simulate.py
-          echo "        {'name': 'country', 'dataType': ['text']}," >> simulate.py
-          echo "        {'name': 'clause_text', 'dataType': ['text']}" >> simulate.py
-          echo "    ]" >> simulate.py
-          echo "})" >> simulate.py
-          echo "" >> simulate.py
-          echo "client.data_object.create({" >> simulate.py
-          echo "    'treaty_name': 'Paris Agreement'," >> simulate.py
-          echo "    'country': 'France'," >> simulate.py
-          echo "    'clause_text': 'France agrees to reduce carbon emissions by 40% by 2030.'" >> simulate.py
-          echo "}, class_name='Clause', vector=[0.1]*768)" >> simulate.py
-          echo "" >> simulate.py
-          echo "# Simulate query" >> simulate.py
-          echo "query = 'What is the Paris Agreement?'" >> simulate.py
-          echo "response = client.query.get(" >> simulate.py
-          echo "    class_name='Clause'," >> simulate.py
-          echo "    properties=['treaty_name', 'country', 'clause_text']" >> simulate.py
-          echo ").with_near_text({'concepts': [query]}).with_limit(5).do()" >> simulate.py
-          echo "" >> simulate.py
-          echo "clauses = response['data']['Get']['Clause']" >> simulate.py
-          echo "prompt = 'Summarize and compare the following policy clauses:\\n'" >> simulate.py
-          echo "for clause in clauses:" >> simulate.py
-          echo "    prompt += f\"- {clause['country']} ({clause['treaty_name']}): {clause['clause_text']}\\n\"" >> simulate.py
-          echo "" >> simulate.py
-          echo "gemini_response = model.generate_content(prompt)" >> simulate.py
-          echo "summary = gemini_response.text" >> simulate.py
-          echo "" >> simulate.py
-          echo "print('--- Clauses ---')" >> simulate.py
-          echo "for clause in clauses:" >> simulate.py
-          echo "    print(f\"{clause['country']} ({clause['treaty_name']}): {clause['clause_text']}\")" >> simulate.py
-          echo "print('\\n--- Gemini Summary ---')" >> simulate.py
-          echo "print(summary)" >> simulate.py
+          cat <<EOF > simulate.py
+import os
+from dotenv import load_dotenv
+import google.generativeai as genai
+from weaviate import WeaviateClient
+from weaviate.auth import AuthApiKey
+from weaviate.connect import ConnectionParams
+
+# Set up environment
+os.environ['WEAVIATE_URL'] = 'http://localhost:8080'
+os.environ['WEAVIATE_API_KEY'] = ''
+os.environ['GEMINI_API_KEY'] = os.getenv('GEMINI_API_KEY')
+
+load_dotenv()
+genai.configure(api_key=os.environ['GEMINI_API_KEY'])
+model = genai.GenerativeModel('gemini-pro')
+
+client = WeaviateClient(
+    connection_params=ConnectionParams.from_url(os.environ['WEAVIATE_URL']),
+    auth_client=AuthApiKey(os.environ['WEAVIATE_API_KEY'])
+)
+
+# Create schema
+client.schema.create_class({
+    'class': 'Clause',
+    'vectorizer': 'none',
+    'properties': [
+        {'name': 'treaty_name', 'dataType': ['text']},
+        {'name': 'country', 'dataType': ['text']},
+        {'name': 'clause_text', 'dataType': ['text']}
+    ]
+})
+
+# Insert dummy data
+client.data_object.create({
+    'treaty_name': 'Paris Agreement',
+    'country': 'France',
+    'clause_text': 'France agrees to reduce carbon emissions by 40% by 2030.'
+}, class_name='Clause', vector=[0.1]*768)
+
+# Run query
+query = 'What is the Paris Agreement?'
+response = client.query.get(
+    class_name='Clause',
+    properties=['treaty_name', 'country', 'clause_text']
+).with_near_text({'concepts': [query]}).with_limit(5).do()
+
+clauses = response['data']['Get']['Clause']
+prompt = 'Summarize and compare the following policy clauses:\\n'
+for clause in clauses:
+    prompt += f"- {clause['country']} ({clause['treaty_name']}): {clause['clause_text']}\\n"
+
+gemini_response = model.generate_content(prompt)
+summary = gemini_response.text
+
+print('--- Clauses ---')
+for clause in clauses:
+    print(f"{clause['country']} ({clause['treaty_name']}): {clause['clause_text']}")
+print('\\n--- Gemini Summary ---')
+print(summary)
+EOF
 
       - name: Run simulation
         run: python simulate.py
+
 
