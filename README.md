@@ -1,5 +1,6 @@
 
-<img src="https://www.durham.ac.uk/media/durham-university/research-/research-institutes/global-policy-institute/69596.jpg" width="500" />
+<img src="https://www.durham.ac.uk/media/durham-university/research-/research-institutes/global-policy-institute/69596.jpg" width="650" />
+
 
 
 #  Global Policy Explorer
