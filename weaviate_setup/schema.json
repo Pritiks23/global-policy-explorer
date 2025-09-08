@@ -1,1 +1,15 @@
+{
+  "classes": [
+    {
+      "class": "Clause",
+      "description": "Policy clauses from global treaties",
+      "vectorizer": "text2vec-openai",
+      "properties": [
+        { "name": "treaty_name", "dataType": ["text"] },
+        { "name": "country", "dataType": ["text"] },
+        { "name": "clause_text", "dataType": ["text"] }
+      ]
+    }
+  ]
+}
 
