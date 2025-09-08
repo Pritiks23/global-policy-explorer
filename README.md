@@ -64,6 +64,9 @@ This project makes policy searchable, explainable, and comparable—turning stat
 #  Tools
 
 ##  GraphRAG: The Reasoning Engine
+##**Heres what I created using GraphRAG!!! took me 67 tries but we got it to create relationships between teh different countries and treaties**
+<img width="640" height="480" alt="graphrag_visual" src="https://github.com/user-attachments/assets/e8936573-e4d6-48f1-a005-51f5998f3100" />
+
 
 **Role:**  
 GraphRAG builds and maintains a dynamic knowledge graph that connects entities and ideas.
