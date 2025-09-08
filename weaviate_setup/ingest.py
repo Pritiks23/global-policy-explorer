@@ -11,7 +11,10 @@ load_dotenv()
 
 # Initialize Weaviate v4 client
 client = WeaviateClient(
-    connection_params=ConnectionParams.from_url(os.getenv("WEAVIATE_URL")),
+    connection_params=ConnectionParams.from_url(
+        http_url=os.getenv("WEAVIATE_URL"),
+        grpc_port=50051  # Default gRPC port; adjust if your instance uses a different one
+    ),
     auth_client=AuthApiKey(os.getenv("WEAVIATE_API_KEY"))
 )
 
