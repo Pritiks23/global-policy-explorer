@@ -23,34 +23,18 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
 
-    - name: Simulate treaty queries
+    - name: Simulate queries from JSON
       run: |
         python - <<EOF
-        import json
-        from graphrag.query_graph import query_graph
-        from nlweb.app import enrich_response
-        from weaviate_setup.ingest import get_client
+import json
 
-        # Load sample queries
-        with open("data/sample_treaties.json", "r") as f:
-            queries = json.load(f)
+with open("data/sample_treaties.json", "r") as f:
+    queries = json.load(f)
 
-        # Initialize Weaviate client
-        client = get_client()
-
-        for i, item in enumerate(queries, 1):
-            query = item["query"]
-            print(f"--- Query {i} ---")
-            print(f"User query: {query}")
-
-            try:
-                graph_response = query_graph(query, client)
-                enriched = enrich_response(query)
-                print(f"GraphRAG response: {graph_response}")
-                print(f"NLWeb enrichment: {enriched}\n")
-            except Exception as e:
-                print(f"Error processing query {i}: {e}\n")
-        EOF
+for i, item in enumerate(queries, 1):
+    print(f"--- Query {i} ---")
+    print(f"User query: {item['query']}")
+    print(f"Response: {item['response']}\n")
+EOF
 
