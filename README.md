@@ -1,3 +1,6 @@
+
+![Enhanced Image](https://www.durham.ac.uk/media/durham-university/research-/research-institutes/global-policy-institute/69596.jpg)
+
 #  Global Policy Explorer
 
 A fully AI-native project that uses **Weaviate**, **GraphRAG**, and **NLWeb** to make global treaties and policy clauses searchable, comparable, and understandable. Powered by **Gemini API**, this tool transforms dense legal documents into actionable insights through semantic search, graph-based reasoning, and natural language interaction.
