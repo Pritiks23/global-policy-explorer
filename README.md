@@ -3,8 +3,8 @@
 A fully AI-native project that uses **Weaviate**, **GraphRAG**, and **NLWeb** to make global treaties and policy clauses searchable, comparable, and understandable. Powered by **Gemini API**, this tool transforms dense legal documents into actionable insights through semantic search, graph-based reasoning, and natural language interaction.
 
 ---
-<img width="576" height="122" alt="Screen Shot 2025-09-08 at 2 37 20 PM" src="https://github.com/user-attachments/assets/a803af8a-16f9-40f4-84f2-6403f70bb4eb" />
 
+<img width="1412" height="639" alt="Screen Shot 2025-09-08 at 2 41 58 PM" src="https://github.com/user-attachments/assets/bac39b60-11b5-47f6-8e2f-2b011d2ed2f2" />
 
 
 
