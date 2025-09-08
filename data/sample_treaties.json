@@ -8,6 +8,45 @@
     "treaty_name": "EU Green Deal",
     "country": "Germany",
     "clause_text": "Member states commit to carbon neutrality by 2050."
+  },
+  {
+    "treaty_name": "Kyoto Protocol",
+    "country": "Japan",
+    "clause_text": "Annex I countries shall reduce greenhouse gas emissions by an average of 5% below 1990 levels."
+  },
+  {
+    "treaty_name": "African Continental Free Trade Area",
+    "country": "Nigeria",
+    "clause_text": "Member states shall eliminate tariffs on 90% of goods over a five-year period."
+  },
+  {
+    "treaty_name": "USMCA",
+    "country": "United States",
+    "clause_text": "Parties shall ensure fair labor practices and prohibit forced labor in supply chains."
+  },
+  {
+    "treaty_name": "Digital Services Act",
+    "country": "Belgium",
+    "clause_text": "Platforms must remove illegal content promptly and provide transparency reports."
+  },
+  {
+    "treaty_name": "ASEAN Agreement on Disaster Management",
+    "country": "Indonesia",
+    "clause_text": "Member states shall cooperate in disaster risk reduction and emergency response."
+  },
+  {
+    "treaty_name": "Convention on the Rights of the Child",
+    "country": "Brazil",
+    "clause_text": "States shall ensure that children are protected from economic exploitation."
+  },
+  {
+    "treaty_name": "Escazú Agreement",
+    "country": "Chile",
+    "clause_text": "Parties shall guarantee access to environmental information and public participation."
+  },
+  {
+    "treaty_name": "Global Compact for Migration",
+    "country": "Canada",
+    "clause_text": "States shall facilitate safe, orderly, and regular migration through international cooperation."
   }
 ]
-
