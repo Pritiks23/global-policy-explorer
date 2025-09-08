@@ -8,7 +8,17 @@ with open("data/sample_treaties.json", "r") as f:
     data = json.load(f)
 
 # Build graph using GraphRAG
-G = build_graph_from_json(data)
+#G = build_graph_from_json(data)
+# Filter out malformed entries
+clean_data = []
+for item in data:
+    if all(k in item for k in ("country", "treaty", "clause", "outcome")):
+        clean_data.append(item)
+    else:
+        print(f"Skipping malformed entry: {item}")
+
+G = build_graph_from_json(clean_data)
+
 
 # Color nodes by type
 color_map = {
