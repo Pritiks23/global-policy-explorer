@@ -25,12 +25,31 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run GraphRAG simulation
-      run: python graphrag/build_graph.py
+    - name: Simulate treaty queries with GraphRAG + NLWeb
+      run: |
+        python - <<EOF
+        import json
+        from graphrag.query_graph import query_graph
+        from nlweb.app import enrich_response
+        from weaviate_setup.ingest import get_client
 
-    - name: Run treaty query simulation
-      run: python graphrag/query_graph.py
+        # Load sample queries
+        with open("data/sample_treaties.json", "r") as f:
+            queries = json.load(f)
 
-    - name: Run NLWeb enrichment
-      run: python nlweb/app.py
+        # Initialize Weaviate client
+        client = get_client()
 
+        for i, item in enumerate(queries, 1):
+            query = item["query"]
+            print(f"--- Query {i} ---")
+            print(f"User query: {query}")
+
+            try:
+                graph_output = query_graph(query, client)
+                enriched_output = enrich_response(query)
+                print(f"GraphRAG output: {graph_output}")
+                print(f"NLWeb enrichment: {enriched_output}\n")
+            except Exception as e:
+                print(f"Error: {e}\n")
+        EOF
