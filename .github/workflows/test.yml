@@ -47,3 +47,10 @@ jobs:
 
     - name: Visualize GraphRAG knowledge graph
       run: python graphrag/visualize.py
+
+    - name: Upload GraphRAG visualization
+      uses: actions/upload-artifact@v3
+      with:
+        name: graphrag-visual
+        path: graphrag/graphrag_visual.png
+
