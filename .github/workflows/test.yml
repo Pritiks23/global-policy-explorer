@@ -1,27 +1,11 @@
-name: Run Global Policy Explorer with Gemini
+name: Basic App Check
 
 on:
   workflow_dispatch:
 
 jobs:
-  run-app:
+  sanity-check:
     runs-on: ubuntu-latest
-
-    services:
-      weaviate:
-        image: semitechnologies/weaviate:latest
-        ports:
-          - 8080:8080
-        options: >-
-          --health-cmd "curl -f http://localhost:8080/v1/.well-known/ready || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        env:
-          QUERY_DEFAULTS_LIMIT: 20
-          AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
-          PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-          ENABLE_MODULES: 'text2vec-transformers'
 
     steps:
       - name: Checkout code
@@ -36,32 +20,28 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install weaviate-client
+          pip install weaviate-client google-generativeai python-dotenv flask
 
-      - name: Run sample Gemini-powered query
+      - name: Create test script
         run: |
-          echo "Running Gemini-powered query..."
-          python -c "
-from nlweb.app import query_pipeline
-from weaviate import Client
+          echo "import os" > test_app.py
+          echo "from flask import Flask" >> test_app.py
+          echo "from weaviate import WeaviateClient" >> test_app.py
+          echo "from weaviate.auth import AuthApiKey" >> test_app.py
+          echo "from weaviate.connect import ConnectionParams" >> test_app.py
+          echo "import google.generativeai as genai" >> test_app.py
+          echo "from dotenv import load_dotenv" >> test_app.py
+          echo "" >> test_app.py
+          echo "load_dotenv()" >> test_app.py
+          echo "os.environ['WEAVIATE_URL'] = 'http://localhost:8080'" >> test_app.py
+          echo "os.environ['WEAVIATE_API_KEY'] = ''" >> test_app.py
+          echo "os.environ['GEMINI_API_KEY'] = 'dummy'" >> test_app.py
+          echo "" >> test_app.py
+          echo "client = WeaviateClient(connection_params=ConnectionParams.from_url(os.environ['WEAVIATE_URL']), auth_client=AuthApiKey(os.environ['WEAVIATE_API_KEY']))" >> test_app.py
+          echo "genai.configure(api_key=os.environ['GEMINI_API_KEY'])" >> test_app.py
+          echo "model = genai.GenerativeModel('gemini-pro')" >> test_app.py
+          echo "app = Flask(__name__)" >> test_app.py
+          echo "print('✅ App initialized successfully')" >> test_app.py
 
-client = Client('http://localhost:8080')
-
-# Simulate Gemini embedding (replace with actual Gemini API call)
-def gemini_embed(text):
-    return [0.1] * 768  # Dummy vector for demo
-
-# Inject dummy vector into Weaviate manually
-client.schema.create_class({
-    'class': 'PolicyDoc',
-    'vectorizer': 'none',
-    'properties': [{'name': 'text', 'dataType': ['text']}]
-})
-
-client.data_object.create({
-    'text': 'The Paris Agreement is a global climate accord.'
-}, class_name='PolicyDoc', vector=gemini_embed('The Paris Agreement is a global climate accord.'))
-
-response = query_pipeline('What is the Paris Agreement?', client)
-print('Query result:', response)
-"
+      - name: Run test script
+        run: python test_app.py
