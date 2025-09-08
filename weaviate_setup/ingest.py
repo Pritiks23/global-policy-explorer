@@ -5,34 +5,30 @@ from dotenv import load_dotenv
 from weaviate import WeaviateClient
 from weaviate.auth import AuthApiKey
 from weaviate.connect import ConnectionParams
-from weaviate.classes.config import Configure, Property, DataType
+from weaviate.classes.config import Property, DataType, Configure
 
 load_dotenv()
 
-# Initialize Weaviate v4 client
+# Initialize Weaviate v4 client (no OpenAI header)
 client = WeaviateClient(
     connection_params=ConnectionParams.from_url(os.getenv("WEAVIATE_URL")),
-    auth_client=AuthApiKey(os.getenv("WEAVIATE_API_KEY")),
-    additional_headers={"X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")}
+    auth_client=AuthApiKey(os.getenv("WEAVIATE_API_KEY"))
 )
 
 # Delete all existing collections
 client.collections.delete_all()
 
-# Load and create schema from JSON
-with open("weaviate_setup/schema.json") as f:
-    schema = json.load(f)
-    for class_def in schema["classes"]:
-        class_name = class_def["class"]
-        properties = [
-            Property(name=prop["name"], data_type=DataType(prop["dataType"][0]))
-            for prop in class_def["properties"]
-        ]
-        client.collections.create(
-            name=class_name,
-            properties=properties,
-            vector_index_config=Configure.VectorIndex.hnsw()
-        )
+# Create Clause collection based on schema
+client.collections.create(
+    name="Clause",
+    description="Policy clauses from global treaties",
+    vectorizer_config=Configure.Vectorizer.text2vec_openai(),
+    properties=[
+        Property(name="treaty_name", data_type=DataType.TEXT),
+        Property(name="country", data_type=DataType.TEXT),
+        Property(name="clause_text", data_type=DataType.TEXT)
+    ]
+)
 
 # Load and ingest data
 with open("data/sample_treaties.json") as f:
