@@ -1,15 +1,26 @@
-name: Validate Global Policy Explorer
+name: Run Global Policy Explorer with Gemini
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 jobs:
-  test:
+  run-app:
     runs-on: ubuntu-latest
+    services:
+      weaviate:
+        image: semitechnologies/weaviate:latest
+        ports:
+          - 8080:8080
+        options: >-
+          --health-cmd "curl -f http://localhost:8080/v1/.well-known/ready || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        env:
+          QUERY_DEFAULTS_LIMIT: 20
+          AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+          PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+          ENABLE_MODULES: 'text2vec-transformers'
 
     steps:
     - name: Checkout code
@@ -25,8 +36,31 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Basic import test
+    - name: Run sample Gemini-powered query
       run: |
-        echo "from graphrag import *" > test_import.py
-        echo "from nlweb import *" >> test_import.py
-        python test_import.py
+        echo "Running Gemini-powered query..."
+        python -c "
+from nlweb.query import query_pipeline
+from weaviate import Client
+
+client = Client('http://localhost:8080')
+
+# Simulate Gemini embedding (replace with actual Gemini API call)
+def gemini_embed(text):
+    return [0.1] * 768  # Dummy vector for demo
+
+# Inject dummy vector into Weaviate manually
+client.schema.create_class({
+    'class': 'PolicyDoc',
+    'vectorizer': 'none',
+    'properties': [{'name': 'text', 'dataType': ['text']}]
+})
+
+client.data_object.create({
+    'text': 'The Paris Agreement is a global climate accord.'
+}, class_name='PolicyDoc', vector=gemini_embed('The Paris Agreement is a global climate accord.'))
+
+# Run query
+response = query_pipeline('What is the Paris Agreement?', client)
+print('Query result:', response)
+"
