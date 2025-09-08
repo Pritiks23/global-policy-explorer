@@ -26,20 +26,29 @@ jobs:
         pip install -r requirements.txt
 
     - name: Simulate treaty queries with GraphRAG + NLWeb
+      env:
+        WEAVIATE_URL: http://localhost:8080
       run: |
         python - <<EOF
         import json
+        import os
+        from weaviate.classes.config import ConnectionParams
+        from weaviate_setup.ingest import get_client
         from graphrag.query_graph import query_graph
         from nlweb.app import enrich_response
-        from weaviate_setup.ingest import get_client
 
         # Load sample queries
         with open("data/sample_treaties.json", "r") as f:
             queries = json.load(f)
 
-        # Initialize Weaviate client
-        client = get_client()
+        # Initialize Weaviate client with grpc_port
+        connection_params = ConnectionParams.from_url(
+            os.getenv("WEAVIATE_URL", "http://localhost:8080"),
+            grpc_port=50051
+        )
+        client = get_client(connection_params)
 
+        # Run queries
         for i, item in enumerate(queries, 1):
             query = item["query"]
             print(f"--- Query {i} ---")
@@ -53,3 +62,4 @@ jobs:
             except Exception as e:
                 print(f"Error: {e}\n")
         EOF
+
