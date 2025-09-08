@@ -1,18 +1,41 @@
-import weaviate, json, os
+import os
+import json
 from dotenv import load_dotenv
+
+from weaviate import WeaviateClient
+from weaviate.auth import AuthApiKey
+from weaviate.connect import ConnectionParams
+from weaviate.classes.config import Configure, Property, DataType
+
 load_dotenv()
 
-client = weaviate.Client(
-    url=os.getenv("WEAVIATE_URL"),
-    auth_client_secret=weaviate.AuthApiKey(os.getenv("WEAVIATE_API_KEY")),
+# Initialize Weaviate v4 client
+client = WeaviateClient(
+    connection_params=ConnectionParams.from_url(os.getenv("WEAVIATE_URL")),
+    auth_client=AuthApiKey(os.getenv("WEAVIATE_API_KEY")),
     additional_headers={"X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")}
 )
 
-client.schema.delete_all()
-with open("weaviate_setup/schema.json") as f:
-    client.schema.create(json.load(f))
+# Delete all existing collections
+client.collections.delete_all()
 
+# Load and create schema from JSON
+with open("weaviate_setup/schema.json") as f:
+    schema = json.load(f)
+    for class_def in schema["classes"]:
+        class_name = class_def["class"]
+        properties = [
+            Property(name=prop["name"], data_type=DataType(prop["dataType"][0]))
+            for prop in class_def["properties"]
+        ]
+        client.collections.create(
+            name=class_name,
+            properties=properties,
+            vector_index_config=Configure.VectorIndex.hnsw()
+        )
+
+# Load and ingest data
 with open("data/sample_treaties.json") as f:
     for item in json.load(f):
-        client.data_object.create(item, "Clause")
+        client.collections.get("Clause").data.insert(properties=item)
 
