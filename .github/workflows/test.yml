@@ -6,6 +6,7 @@ on:
 jobs:
   run-app:
     runs-on: ubuntu-latest
+
     services:
       weaviate:
         image: semitechnologies/weaviate:latest
@@ -23,23 +24,23 @@ jobs:
           ENABLE_MODULES: 'text2vec-transformers'
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Run sample Gemini-powered query
-      run: |
-        echo "Running Gemini-powered query..."
-        python -c "
+      - name: Run sample Gemini-powered query
+        run: |
+          echo "Running Gemini-powered query..."
+          python -c "
 from nlweb.query import query_pipeline
 from weaviate import Client
 
@@ -60,7 +61,6 @@ client.data_object.create({
     'text': 'The Paris Agreement is a global climate accord.'
 }, class_name='PolicyDoc', vector=gemini_embed('The Paris Agreement is a global climate accord.'))
 
-# Run query
 response = query_pipeline('What is the Paris Agreement?', client)
 print('Query result:', response)
 "
