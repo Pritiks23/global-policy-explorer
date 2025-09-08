@@ -42,7 +42,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          echo '
+          cat <<EOF > simulate.py
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
@@ -88,17 +88,18 @@ response = client.query.get(
 clauses = response["data"]["Get"]["Clause"]
 prompt = "Summarize and compare the following policy clauses:\\n"
 for clause in clauses:
-    prompt += f"- {clause["country"]} ({clause["treaty_name"]}): {clause["clause_text"]}\\n"
+    prompt += f"- {clause['country']} ({clause['treaty_name']}): {clause['clause_text']}\\n"
 
 gemini_response = model.generate_content(prompt)
 summary = gemini_response.text
 
 print("--- Clauses ---")
 for clause in clauses:
-    print(f"{clause["country"]} ({clause["treaty_name"]}): {clause["clause_text"]}")
+    print(f"{clause['country']} ({clause['treaty_name']}): {clause['clause_text']}")
 print("\\n--- Gemini Summary ---")
 print(summary)
-' > simulate.py
+EOF
 
       - name: Run simulation
         run: python simulate.py
+
