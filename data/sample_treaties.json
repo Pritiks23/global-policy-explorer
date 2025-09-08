@@ -1,1 +1,13 @@
+[
+  {
+    "treaty_name": "Paris Agreement",
+    "country": "France",
+    "clause_text": "Each country shall submit nationally determined contributions to reduce emissions."
+  },
+  {
+    "treaty_name": "EU Green Deal",
+    "country": "Germany",
+    "clause_text": "Member states commit to carbon neutrality by 2050."
+  }
+]
 
