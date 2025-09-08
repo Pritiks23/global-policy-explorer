@@ -77,7 +77,7 @@ Policy isn’t just about isolated clauses—it’s about how they interrelate. 
 
 ---
 
-## 💬 NLWeb: The Conversational Interface
+## NLWeb: The Conversational Interface
 
 **Role:**  
 NLWeb is the natural language front-end that makes the system intuitive and accessible.
@@ -92,7 +92,7 @@ Legal and policy research is often inaccessible. NLWeb democratizes it by allowi
 
 ---
 
-## ✨ What Makes This Project Unique
+## What Makes This Project Unique
 
 - **Clause-Level Intelligence:** Most systems index whole documents; this one zooms in on the clause level.
 - **Semantic + Graph Fusion:** Combines deep semantic understanding with structured reasoning.
