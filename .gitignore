@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# Graph files
+*.gml
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDE-specific
+.vscode/
+.idea/
