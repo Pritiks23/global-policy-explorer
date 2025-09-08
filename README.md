@@ -4,7 +4,6 @@ A fully AI-native project that uses **Weaviate**, **GraphRAG**, and **NLWeb** to
 
 ---
 
-<img width="1412" height="639" alt="Screen Shot 2025-09-08 at 2 41 58 PM" src="https://github.com/user-attachments/assets/bac39b60-11b5-47f6-8e2f-2b011d2ed2f2" />
 
 
 <table>
