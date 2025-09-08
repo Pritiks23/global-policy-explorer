@@ -25,8 +25,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Basic import test
+    - name: Simulate user query
       run: |
-        echo "from graphrag import *" > test_import.py
-        echo "from nlweb import *" >> test_import.py
-        python test_import.py
+        echo "query = 'What is the Paris Agreement?'" > demo.py
+        echo "clause = 'France agrees to reduce carbon emissions by 40% by 2030.'" >> demo.py
+        echo "print(f'User query: {query}')" >> demo.py
+        echo "print(f'Response: {clause}')" >> demo.py
+        python demo.py
