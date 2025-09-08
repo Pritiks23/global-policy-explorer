@@ -41,7 +41,7 @@ jobs:
         run: |
           echo "Running Gemini-powered query..."
           python -c "
-from nlweb.query import query_pipeline
+from nlweb.app import query_pipeline
 from weaviate import Client
 
 client = Client('http://localhost:8080')
