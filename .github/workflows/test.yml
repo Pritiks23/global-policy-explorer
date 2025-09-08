@@ -31,6 +31,7 @@ jobs:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       run: |
         python - <<EOF
+        import os
         import google.generativeai as genai
 
         genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
@@ -63,3 +64,4 @@ jobs:
                 except Exception as e:
                     print(f"Error fetching Gemini response: {e}\n")
         EOF
+
