@@ -25,30 +25,32 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Simulate queries using project modules
+    - name: Simulate treaty queries
       run: |
-        echo "from graphrag.core import GraphRAG" > demo.py
-        echo "from nlweb.interface import NLWebInterface" >> demo.py
-        echo "from weaviate_setup.client import get_client" >> demo.py
-        echo "" >> demo.py
-        echo "# Initialize components" >> demo.py
-        echo "client = get_client()" >> demo.py
-        echo "graphrag = GraphRAG(client)" >> demo.py
-        echo "nlweb = NLWebInterface()" >> demo.py
-        echo "" >> demo.py
-        echo "queries = [" >> demo.py
-        echo "  'What is the Paris Agreement?', " >> demo.py
-        echo "  'What does the Kyoto Protocol require?', " >> demo.py
-        echo "  'What is the Montreal Protocol?', " >> demo.py
-        echo "  'What is the role of the IPCC?', " >> demo.py
-        echo "  'What is COP26?', " >> demo.py
-        echo "  'What is the Green Climate Fund?'" >> demo.py
-        echo "]" >> demo.py
-        echo "" >> demo.py
-        echo "for i, query in enumerate(queries, 1):" >> demo.py
-        echo "    print(f'--- Query {i} ---')" >> demo.py
-        echo "    print(f'User query: {query}')" >> demo.py
-        echo "    print(f'GraphRAG response: {graphrag.answer(query)}')" >> demo.py
-        echo "    print(f'NLWeb enrichment: {nlweb.enrich_response(query)}\\n')" >> demo.py
-        python demo.py
+        python - <<EOF
+        import json
+        from graphrag.query_graph import query_graph
+        from nlweb.app import enrich_response
+        from weaviate_setup.ingest import get_client
+
+        # Load sample queries
+        with open("data/sample_treaties.json", "r") as f:
+            queries = json.load(f)
+
+        # Initialize Weaviate client
+        client = get_client()
+
+        for i, item in enumerate(queries, 1):
+            query = item["query"]
+            print(f"--- Query {i} ---")
+            print(f"User query: {query}")
+
+            try:
+                graph_response = query_graph(query, client)
+                enriched = enrich_response(query)
+                print(f"GraphRAG response: {graph_response}")
+                print(f"NLWeb enrichment: {enriched}\n")
+            except Exception as e:
+                print(f"Error processing query {i}: {e}\n")
+        EOF
 
