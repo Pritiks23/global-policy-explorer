@@ -44,17 +44,14 @@ from weaviate import WeaviateClient
 from weaviate.auth import AuthApiKey
 from weaviate.connect import ConnectionParams
 
-# Configure Gemini
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 model = genai.GenerativeModel("gemini-pro")
 
-# Connect to Weaviate
 client = WeaviateClient(
     connection_params=ConnectionParams.from_url("http://localhost:8080"),
     auth_client=AuthApiKey("")
 )
 
-# Create schema
 client.schema.create_class({
     "class": "Clause",
     "vectorizer": "none",
@@ -65,14 +62,12 @@ client.schema.create_class({
     ]
 })
 
-# Insert dummy data
 client.data_object.create({
     "treaty_name": "Paris Agreement",
     "country": "France",
     "clause_text": "France agrees to reduce carbon emissions by 40% by 2030."
 }, class_name="Clause", vector=[0.1]*768)
 
-# Run query
 query = "What is the Paris Agreement?"
 response = client.query.get(
     class_name="Clause",
