@@ -48,5 +48,5 @@ This project makes policy searchable, explainable, and comparable—turning stat
 
 ---
 
-## 🛠️ Project Structure
+
 
