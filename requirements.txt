@@ -1,5 +1,5 @@
 weaviate-client
-openai
 networkx
 python-dotenv
 flask
+google-generativeai
