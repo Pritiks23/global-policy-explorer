@@ -1,13 +1,17 @@
 from flask import Flask, request, render_template_string
 import weaviate, os
 from dotenv import load_dotenv
+import google.generativeai as genai
+
 load_dotenv()
 
 client = weaviate.Client(
     url=os.getenv("WEAVIATE_URL"),
-    auth_client_secret=weaviate.AuthApiKey(os.getenv("WEAVIATE_API_KEY")),
-    additional_headers={"X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")}
+    auth_client_secret=weaviate.AuthApiKey(os.getenv("WEAVIATE_API_KEY"))
 )
+
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel("gemini-pro")
 
 app = Flask(__name__)
 
@@ -36,7 +40,16 @@ def index():
         query = request.form["query"]
         response = client.query.get("Clause", ["treaty_name", "country", "clause_text"])\
             .with_near_text({"concepts": [query]}).with_limit(5).do()
-        results = response["data"]["Get"]["Clause"]
+        clauses = response["data"]["Get"]["Clause"]
+
+        prompt = "Summarize and compare the following policy clauses:\n"
+        for clause in clauses:
+            prompt += f"- {clause['country']} ({clause['treaty_name']}): {clause['clause_text']}\n"
+
+        gemini_response = model.generate_content(prompt)
+        summary = gemini_response.text
+        results = clauses + [{"country": "Summary", "clause_text": summary, "treaty_name": "Gemini"}]
+
     return render_template_string(HTML, results=results)
 
 if __name__ == "__main__":
