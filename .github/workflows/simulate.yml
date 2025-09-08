@@ -6,37 +6,6 @@ on:
 jobs:
   simulate:
     runs-on: ubuntu-latest
-
-    services:
-      weaviate:
-        image: semitechnologies/weaviate:latest
-        ports:
-          - 8080:8080
-        options: >-
-          --health-cmd "curl -f http://localhost:8080/v1/.well-known/ready || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        env:
-          QUERY_DEFAULTS_LIMIT: 20
-          AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
-          PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-          ENABLE_MODULES: 'text2vec-transformers'
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Install dependencies
-        run: |
-          pip install weaviate-client google-generativeai
-
-      - name: Run simulation
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python simulate.py
+      - name: Hello world
+        run: echo "Workflow is working!"
