@@ -38,7 +38,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python -u -c "
-import os
+
 import google.generativeai as genai
 from weaviate import WeaviateClient
 from weaviate.auth import AuthApiKey
