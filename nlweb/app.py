@@ -1,15 +1,21 @@
 from flask import Flask, request, render_template_string
-import weaviate, os
+import os
 from dotenv import load_dotenv
 import google.generativeai as genai
 
+from weaviate import WeaviateClient
+from weaviate.auth import AuthApiKey
+from weaviate.connect import ConnectionParams
+
 load_dotenv()
 
-client = weaviate.Client(
-    url=os.getenv("WEAVIATE_URL"),
-    auth_client_secret=weaviate.AuthApiKey(os.getenv("WEAVIATE_API_KEY"))
+# Initialize Weaviate v4 client
+client = WeaviateClient(
+    connection_params=ConnectionParams.from_url(os.getenv("WEAVIATE_URL")),
+    auth_client=AuthApiKey(os.getenv("WEAVIATE_API_KEY"))
 )
 
+# Initialize Gemini
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-pro")
 
@@ -38,8 +44,11 @@ def index():
     results = []
     if request.method == "POST":
         query = request.form["query"]
-        response = client.query.get("Clause", ["treaty_name", "country", "clause_text"])\
-            .with_near_text({"concepts": [query]}).with_limit(5).do()
+        response = client.query.get(
+            class_name="Clause",
+            properties=["treaty_name", "country", "clause_text"]
+        ).with_near_text({"concepts": [query]}).with_limit(5).do()
+
         clauses = response["data"]["Get"]["Clause"]
 
         prompt = "Summarize and compare the following policy clauses:\n"
@@ -54,4 +63,5 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
