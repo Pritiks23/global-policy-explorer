@@ -25,18 +25,30 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Simulate multiple user queries
+    - name: Simulate queries using project modules
       run: |
-        echo "queries = [" > demo.py
-        echo "  ('What is the Paris Agreement?', 'France agrees to reduce carbon emissions by 40% by 2030.')," >> demo.py
-        echo "  ('What does the Kyoto Protocol require?', 'Japan commits to reducing greenhouse gas emissions by 6% below 1990 levels.')," >> demo.py
-        echo "  ('What is the Montreal Protocol?', 'Countries agree to phase out ozone-depleting substances like CFCs.')," >> demo.py
-        echo "  ('What is the role of the IPCC?', 'The IPCC provides scientific assessments on climate change to inform policy decisions.')," >> demo.py
-        echo "  ('What is COP26?', 'COP26 focused on accelerating action toward the goals of the Paris Agreement.')," >> demo.py
-        echo "  ('What is the Green Climate Fund?', 'It helps developing countries finance climate mitigation and adaptation efforts.')" >> demo.py
+        echo "from graphrag.core import GraphRAG" > demo.py
+        echo "from nlweb.interface import NLWebInterface" >> demo.py
+        echo "from weaviate_setup.client import get_client" >> demo.py
+        echo "" >> demo.py
+        echo "# Initialize components" >> demo.py
+        echo "client = get_client()" >> demo.py
+        echo "graphrag = GraphRAG(client)" >> demo.py
+        echo "nlweb = NLWebInterface()" >> demo.py
+        echo "" >> demo.py
+        echo "queries = [" >> demo.py
+        echo "  'What is the Paris Agreement?', " >> demo.py
+        echo "  'What does the Kyoto Protocol require?', " >> demo.py
+        echo "  'What is the Montreal Protocol?', " >> demo.py
+        echo "  'What is the role of the IPCC?', " >> demo.py
+        echo "  'What is COP26?', " >> demo.py
+        echo "  'What is the Green Climate Fund?'" >> demo.py
         echo "]" >> demo.py
-        echo "for i, (query, response) in enumerate(queries, 1):" >> demo.py
+        echo "" >> demo.py
+        echo "for i, query in enumerate(queries, 1):" >> demo.py
         echo "    print(f'--- Query {i} ---')" >> demo.py
         echo "    print(f'User query: {query}')" >> demo.py
-        echo "    print(f'Response: {response}\\n')" >> demo.py
+        echo "    print(f'GraphRAG response: {graphrag.answer(query)}')" >> demo.py
+        echo "    print(f'NLWeb enrichment: {nlweb.enrich_response(query)}\\n')" >> demo.py
         python demo.py
+
