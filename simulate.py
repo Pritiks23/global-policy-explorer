@@ -1,3 +1,4 @@
+# simulate.py
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
@@ -53,4 +54,5 @@ for clause in clauses:
     print(f"{clause['country']} ({clause['treaty_name']}): {clause['clause_text']}")
 print("\n--- Gemini Summary ---")
 print(summary)
+
 
