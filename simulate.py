@@ -53,3 +53,4 @@ for clause in clauses:
     print(f"{clause['country']} ({clause['treaty_name']}): {clause['clause_text']}")
 print("\n--- Gemini Summary ---")
 print(summary)
+
