@@ -1,10 +1,16 @@
-# 🌍 Global Policy Explorer
+#  Global Policy Explorer
 
 A fully AI-native project that uses **Weaviate**, **GraphRAG**, and **NLWeb** to make global treaties and policy clauses searchable, comparable, and understandable. Powered by **Gemini API**, this tool transforms dense legal documents into actionable insights through semantic search, graph-based reasoning, and natural language interaction.
 
 ---
+<img width="576" height="122" alt="Screen Shot 2025-09-08 at 2 37 20 PM" src="https://github.com/user-attachments/assets/a803af8a-16f9-40f4-84f2-6403f70bb4eb" />
 
-## 🚀 What Makes This Project Unique
+
+
+
+
+
+##  What Makes This Project Unique
 
 This solution combines three powerful technologies:
 
@@ -16,20 +22,20 @@ Unlike traditional legal databases, this project doesn’t just retrieve documen
 
 ---
 
-## 🧠 Core Features
+##  Core Features
 
-- 🔍 **Semantic Search**: Find relevant clauses across treaties using concept-based queries.
-- 🧩 **Clause-Level Indexing**: Each clause is stored with metadata (country, treaty, domain).
-- 🔗 **Graph-Based Reasoning**: Explore relationships between countries, clauses, and outcomes.
-- 💬 **Natural Language Interface**: Ask questions like “Compare climate commitments of G7 countries.”
-- 📊 **Comparative Analysis**: Automatically compare clauses across jurisdictions.
-- 📁 **Document Explorer**: Navigate full treaties with clause-level insights.
-- 🔔 **Alerts & Updates**: Subscribe to topics and get notified when new treaties are signed.
-- 🌐 **Multilingual Support**: Semantic search works across languages using multilingual embeddings.
+-  **Semantic Search**: Find relevant clauses across treaties using concept-based queries.
+-  **Clause-Level Indexing**: Each clause is stored with metadata (country, treaty, domain).
+-  **Graph-Based Reasoning**: Explore relationships between countries, clauses, and outcomes.
+-  **Natural Language Interface**: Ask questions like “Compare climate commitments of G7 countries.”
+-  **Comparative Analysis**: Automatically compare clauses across jurisdictions.
+-  **Document Explorer**: Navigate full treaties with clause-level insights.
+-  **Alerts & Updates**: Subscribe to topics and get notified when new treaties are signed.
+-  **Multilingual Support**: Semantic search works across languages using multilingual embeddings.
 
 ---
 
-## 🎯 Target Customers & Problem Solved
+##  Target Customers & Problem Solved
 
 ### Target Users:
 - Policy analysts, journalists, diplomats, advocacy groups, academics, and students.
