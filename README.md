@@ -6,7 +6,7 @@
 
 #  Global Policy Explorer
 
-A fully AI-native project that uses **Weaviate**, **GraphRAG**, and **NLWeb** to make global treaties and policy clauses searchable, comparable, and understandable. Powered by **Gemini API**, this tool transforms dense legal documents into actionable insights through semantic search, graph-based reasoning, and natural language interaction.
+A fully AI-native project that uses **Weaviate**, **GraphRAG**, and **NLWeb** to make global treaties and policy clauses searchable, comparable, and understandable.  Transforms dense legal documents into actionable insights through semantic search, graph-based reasoning, and natural language interaction.
 
 ---
 
