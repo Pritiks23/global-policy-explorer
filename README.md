@@ -95,7 +95,7 @@ NLWeb is the natural language front-end that makes the system intuitive and acce
 Legal and policy research is often inaccessible. NLWeb democratizes it by allowing users to interact with the system in plain language, no technical expertise required.
 
 ---
-##Weaviate 
+## Weaviate
 was used to semantically index individual policy clauses, enabling concept-based search across treaties and jurisdictions. Each clause was embedded with metadata—such as country, treaty name, and policy domain—allowing for precise and contextual retrieval. This made it possible to surface relevant content even when users asked complex or multilingual questions.
 
 ## What Makes This Project Unique
