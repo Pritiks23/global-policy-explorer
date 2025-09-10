@@ -1,5 +1,5 @@
-My Pitch to Investors in Seattle!
-[![Watch the video](https://www.youtube.com/watch?v=92NbBRz09Wo)
+## My Pitch to Investors in Seattle!
+https://www.youtube.com/watch?v=92NbBRz09Wo
 
 <img src="https://www.durham.ac.uk/media/durham-university/research-/research-institutes/global-policy-institute/69596.jpg" width="650" />
 <img width="640" height="480" alt="graphrag_visual" src="https://github.com/user-attachments/assets/b6b37f17-9d3b-4fa3-9d79-987e1968a089" />
