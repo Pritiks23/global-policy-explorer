@@ -1,4 +1,5 @@
 ## My Pitch to Investors in Seattle! ---->  https://www.youtube.com/watch?v=92NbBRz09Wo
+<img width="940" height="492" alt="Screen Shot 2025-09-09 at 10 58 23 PM" src="https://github.com/user-attachments/assets/7f0fa369-3702-43a4-933a-47a94b8a9351" />
 
 <img src="https://www.durham.ac.uk/media/durham-university/research-/research-institutes/global-policy-institute/69596.jpg" width="650" />
 <img width="640" height="480" alt="graphrag_visual" src="https://github.com/user-attachments/assets/b6b37f17-9d3b-4fa3-9d79-987e1968a089" />
